@@ -9,6 +9,10 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
+      # Étape indispensable pour télécharger le code du dépôt dans le runner GitHub
+      - name: Checkout target repo
+        uses: actions/checkout@v4
+
       - name: Sync upstream changes
         uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
         with:
