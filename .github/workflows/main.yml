@@ -5,11 +5,14 @@ on:
     - cron: '0 0 * * *' # S'exécute automatiquement toutes les nuits à minuit
   workflow_dispatch: # Vous permet de lancer la mise à jour manuellement d'un clic
 
+# Cette section est indispensable pour autoriser l'écriture sur votre dépôt
+permissions:
+  contents: write
+
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      # Étape indispensable pour télécharger le code du dépôt dans le runner GitHub
       - name: Checkout target repo
         uses: actions/checkout@v4
 
