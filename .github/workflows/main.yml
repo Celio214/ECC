@@ -16,17 +16,19 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.SYNC_ECC }}
-          fetch-depth: 0 # Télécharge tout l'historique pour éviter les conflits
+          fetch-depth: 0
 
       - name: Configure Git
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Sync with original repository
+      - name: Force Sync with Upstream
         run: |
           git remote add upstream https://github.com
           git fetch upstream main
           git checkout main
-          git merge upstream/main --allow-unrelated-histories -m "Mise à jour automatique ECC"
-          git push origin main
+          # Aligne immédiatement votre branche main sur celle du créateur officiel
+          git reset --hard upstream/main
+          # Force la mise à jour sur votre compte GitHub
+          git push origin main --force
