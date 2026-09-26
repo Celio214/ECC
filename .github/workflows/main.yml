@@ -2,8 +2,11 @@ name: Auto Sync Fork
 
 on:
   schedule:
-    - cron: '10 11 * * *'
-  workflow_dispatch:
+    - cron: '10 11 * * *' # S'exécute automatiquement toutes les nuits à minuit
+  workflow_dispatch: # Vous permet de lancer la mise à jour manuellement d'un clic
+
+permissions:
+  contents: write
 
 jobs:
   sync:
@@ -11,11 +14,19 @@ jobs:
     steps:
       - name: Checkout target repo
         uses: actions/checkout@v4
-
-      - name: Sync upstream changes
-        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
         with:
-          target_sync_branch: main
-          target_repo_token: ${{ secrets.SYNC_ECC }}
-          upstream_sync_repo: affaan-m/ECC
-          upstream_sync_branch: main
+          token: ${{ secrets.SYNC_ECC }}
+          fetch-depth: 0 # Télécharge tout l'historique pour éviter les conflits
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Sync with original repository
+        run: |
+          git remote add upstream https://github.com
+          git fetch upstream main
+          git checkout main
+          git merge upstream/main --allow-unrelated-histories -m "Mise à jour automatique ECC"
+          git push origin main
