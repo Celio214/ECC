@@ -2,12 +2,8 @@ name: Auto Sync Fork
 
 on:
   schedule:
-    - cron: '0 11 * * *' # S'exécute automatiquement toutes les nuits à minuit
-  workflow_dispatch: # Vous permet de lancer la mise à jour manuellement d'un clic
-
-permissions:
-  contents: write
-  actions: write # Autorisation requise pour mettre à jour les workflows du fork
+    - cron: '10 11 * * *'
+  workflow_dispatch:
 
 jobs:
   sync:
@@ -15,13 +11,11 @@ jobs:
     steps:
       - name: Checkout target repo
         uses: actions/checkout@v4
-        with:
-          persist-credentials: true # Conserve les droits d'écriture pour l'étape suivante
 
       - name: Sync upstream changes
         uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
         with:
           target_sync_branch: main
-          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+          target_repo_token: ${{ secrets.SYNC_ECC }}
           upstream_sync_repo: affaan-m/ECC
           upstream_sync_branch: main
