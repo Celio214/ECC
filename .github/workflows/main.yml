@@ -2,7 +2,7 @@ name: Auto Sync Fork
 
 on:
   schedule:
-    - cron: '0 0 * * *' # S'exécute automatiquement toutes les nuits à minuit
+    - cron: '0 11 * * *' # S'exécute automatiquement toutes les nuits à minuit
   workflow_dispatch: # Vous permet de lancer la mise à jour manuellement d'un clic
 
 permissions:
