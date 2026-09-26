@@ -15,7 +15,6 @@ jobs:
       - name: Checkout target repo
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.SYNC_ECC }}
           fetch-depth: 0
 
       - name: Configure Git
@@ -28,7 +27,9 @@ jobs:
           git remote add upstream https://github.com
           git fetch upstream main
           git checkout main
-          # Aligne immédiatement votre branche main sur celle du créateur officiel
+          
+          # Aligne votre code sur le dépôt d'origine
           git reset --hard upstream/main
-          # Force la mise à jour sur votre compte GitHub
-          git push origin main --force
+          
+          # Pousse les changements en incluant de force votre token de sécurité SYNC_ECC
+          git push https://x-access-token:${{ secrets.SYNC_ECC }}@://github.com main --force
